@@ -4,15 +4,14 @@
 const mongoose = require('mongoose'),
       crypto = require('crypto');
 
-//链接数据库
-mongoose.connect("mongodb://localhost/myOwnDatabase");
-
+//链接远程数据库
+mongoose.connect("mongodb://104.194.93.138:27017/charmingHui");
 //创建一个Schema
 let Charming_user_schema = new mongoose.Schema({
     username:{type:String,unique:true,required:true},
     password:{type:String,required:true}
 });
-
+//创建用户模型进行操作
 let Charming_user = mongoose.model('Charming_user',Charming_user_schema);
 
 //储存session_id
@@ -201,16 +200,17 @@ exports.login = (req,res) => {
             let session_id = (new Date()).getTime() + Math.random(),
                 //过期间隔
                 exp = 24 * 60 * 60 * 1000,
-                session_exp = (new Date()).getTime() + exp,
                 //cookie的过期时间设置为10s后
+                session_exp = (new Date()).getTime() + exp,
+                //写入cookie中session_id的参数选择
                 cookie_opt = {
                     expires:session_exp,
                     httpOnly:true
                 };
 
+            //创建一个用户的session
             let userSession = new UserSession(session_id,session_exp);
 
-            console.log(`登录设置的${session_id}`);
             userSession.add_to_sessions();
             userSession.setCookie(res,cookie_opt);
 
@@ -224,7 +224,7 @@ exports.login = (req,res) => {
         },0)
     };
 
-    //登陆流程控制生成器
+    //登陆流程控制
     function *login() {
         //查询用户是否存在
         yield findUser();
