@@ -7,7 +7,9 @@ const path = require('path'),
 
 const crypto = require("crypto");
 
-let account = require('./charming_account/account');
+const account = require('./charming_account/account'),
+      get_img = require('./charming_get_img/get_img');
+
 
 //判断是否直接访问域名
 let isHomepage = (req) => req.pathname.slice(-1) === '/';
@@ -37,7 +39,6 @@ let rtnContType = (type) => {
             type = "image/x-icon";
             break;
         default:
-            console.log(type);
             throw new Error("Please add fileExt");
     }
     return type;
@@ -110,17 +111,43 @@ exports.getData = (req,res) => {
     //文件尾缀
     let ext = path.extname(pathname);
 
-    if (isHomepage(req)){               //访问域名
-        req.pathname += 'index.html';
-        //更新ext以便返回相应文件
-        ext = path.extname(pathname);
+    // //访问域名
+    // if (isHomepage(req)){
+    //     req.pathname += 'index.html';
+    //     //更新ext以便返回相应文件
+    //     ext = path.extname(req.pathname);
+    //     console.log(ext);
+    //     rtnFile(req,res,ext);
+    // }
+    // else {
+    //     if (ext) {
+    //         //访问指定路径文件
+    //         rtnFile(req,res,ext);
+    //     }
+    // }
+
+    //判断是否有ext、有则返回相应尾缀的文件
+    if (ext) {
+        //访问指定路径文件
         rtnFile(req,res,ext);
     }
-    else {                              //访问指定路径文件
-        if (ext){
+    else {
+        //判断是否直接访问ip或域名、不是则进入相应方法
+        if (isHomepage(req)){
+            req.pathname += 'index.html';
+            //更新ext以便返回相应文件
+            ext = path.extname(req.pathname);
             rtnFile(req,res,ext);
         }
+        else {
+            //获取主页图片路径
+            if (/\/homepage_img$/.test(pathname)){
+                get_img.get_homepage(req,res);
+            }
+        }
     }
+
+
 
 };
 
@@ -141,5 +168,10 @@ exports.postData = (req,res) => {
     //session状态登录
     if (/\/session$/.test(pathname)){
         account.session_login(req,res);
+    }
+
+    //session删除
+    if (/\/session_del$/.test(pathname)){
+        account.session_del(req,res);
     }
 };

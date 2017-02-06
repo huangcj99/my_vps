@@ -65,7 +65,7 @@ function UserSession(id,exp) {
         // 在服务器内存中存储session_id
         sessions[this.session_id] = info;
     };
-    
+
     this.setCookie = function (res,opt) {
         res.setHeader("Set-Cookie",serialize("session_id",this.session_id,opt));
     }
@@ -289,4 +289,27 @@ exports.session_login = (req,res) => {
         });
         res.end(JSON.stringify(login_fail));
     }
+};
+
+exports.session_del = (req,res) => {
+    let cookies = req.headers.cookie,
+        session_id;
+
+    //获取cookie中的session_id
+    cookies.split(";").forEach((cookie) => {
+        let item = cookie.split("=");
+        if (item[0] === " session_id"){
+            session_id = item[1];
+        }
+    });
+
+    delete sessions[session_id];
+
+    let del_success = {
+        "status":true,
+        "info":"删除成功"
+    };
+
+    res.writeHead(200);
+    res.end(JSON.stringify(del_success));
 };

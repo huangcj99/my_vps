@@ -1,8 +1,7 @@
 /**
  * Created by gunjoe on 2017/2/6.
  */
-const fs = require('fs'),
-      path = require('path');
+const fs = require('fs');
 
 const mongoose = require('mongoose');
 
@@ -23,6 +22,7 @@ let homepage = {
     }
 };
 
+//文件查询器
 function Interrogator(opt) {
     this.dir_path = opt.dir_path;
     this.name = opt.name;
@@ -45,7 +45,6 @@ function Interrogator(opt) {
         });
 
         find_img_promise
-
             //文件夹存在则进行文件查询
             .then(() => {
                 //合并文件路径和文件名
@@ -110,7 +109,9 @@ let insert = (file_url) => {
 
     save_url_promise
         .then(() => {
+            //执行文件名递增
             interrogator.name_rule();
+            //递归查询
             interrogator.get_file_path();
         },(err) => {
             throw err;
@@ -120,6 +121,6 @@ let insert = (file_url) => {
 
 //new一个img文件路径查询器
 let interrogator = new Interrogator(homepage);
-
+//初始执行
 interrogator.get_file_path();
 
