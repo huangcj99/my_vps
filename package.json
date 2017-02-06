@@ -1,0 +1,28 @@
+{
+  "name": "my_vps",
+  "version": "1.0.0",
+  "description": "nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "make up"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/smallcatcat-joe/my_vps.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "smallcatcat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smallcatcat-joe/my_vps/issues"
+  },
+  "homepage": "https://github.com/smallcatcat-joe/my_vps#readme",
+  "devDependencies": {
+    "browser-sync": "^2.18.7",
+    "gulp": "^3.9.1",
+    "mongoose": "^4.8.1",
+    "node-sass": "^4.5.0"
+  }
+}
