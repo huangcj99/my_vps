@@ -244,13 +244,15 @@ exports.session_login = (req,res) => {
     let cookies = req.headers.cookie,
         session_id;
 
-    //获取cookie中的session_id
-    cookies.split(";").forEach((cookie) => {
-        let item = cookie.split("=");
-        if (item[0] === " session_id"){
-            session_id = item[1];
-        }
-    });
+    if (cookies) {
+    	//获取cookie中的session_id
+	    cookies.split(";").forEach((cookie) => {
+	        let item = cookie.split("=");
+	        if (item[0] === " session_id"){
+	            session_id = item[1];
+	        }
+	    });
+    }
 
     let hasSession = () => sessions[session_id];
 
