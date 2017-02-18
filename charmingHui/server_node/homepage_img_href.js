@@ -7,25 +7,40 @@ const mongoose = require('mongoose');
 
 //数据库连接并创建首页图片模型
 mongoose.connect("mongodb://104.194.93.138:27017/charmingHui");
-let homepage_img_schema = new mongoose.Schema({
-    url:{type:String,require:true,unique:true}
+let list_img_schema = new mongoose.Schema({
+    url:{type:String,require:true,unique:true},
+    size:{type:String,require:true}
 });
-let homepage_img = mongoose.model("Homepage_img",homepage_img_schema);
+let vps_list = mongoose.model("vps_list",list_img_schema);
 
 //主页图片url数据
 let homepage = {
-    dir_path:"D:nodeProject/myVps/charmingHui/src/img/list/homepage/",
-    name:0,
+    dir_path:"D:nodeProject/myVps/charmingHui/src/img/commodity_list/pop_up1/list_img1",
+    big:0,
+    small:0,
     ext:".jpg",
     name_rule:function () {
-        this.name++;
+        this.small++;
+        if (this.small > 3) {
+            this.small = 0;
+            this.big++;
+        }
+        else {
+            if (this.big === 17){
+                if (this.small > 2) {
+                    this.small = 0;
+                    this.big++;
+                }
+            }
+        }
     }
 };
 
 //文件查询器
 function Interrogator(opt) {
     this.dir_path = opt.dir_path;
-    this.name = opt.name;
+    this.big = opt.big;
+    this.small = opt.small;
     this.ext = opt.ext;
     this.file_url = null;
     this.name_rule = opt.name_rule;
@@ -36,6 +51,7 @@ function Interrogator(opt) {
             fs.exists(this.dir_path,(exists) => {
                 if (!exists) {
                     // throw new Error(`不存在${this.dir_path}`);
+
                     reject();
                 }
                 else {
@@ -48,8 +64,10 @@ function Interrogator(opt) {
             //文件夹存在则进行文件查询
             .then(() => {
                 //合并文件路径和文件名
-                let file_name = this.name + this.ext;
+                // let file_name = this.name + this.ext;
+                let file_name = `/${this.big}_${this.small}${this.ext}`;
                 this.file_url = this.dir_path + file_name;
+                console.log(this.file_url);
 
                 let exists_promise = new Promise((resolve,reject) => {
                     fs.exists(this.file_url,(exists) => {
@@ -91,8 +109,15 @@ function Interrogator(opt) {
 
 let insert = (file_url) => {
     let save_url_promise = new Promise((resolve,reject) => {
-        let img_url = new homepage_img({
-            url:file_url
+        let size = "small";
+
+        if (interrogator.small === 0) {
+            size = "big";
+        }
+
+        let img_url = new vps_list({
+            url:file_url,
+            size:size
         });
 
         img_url.save((err) => {

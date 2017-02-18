@@ -20,9 +20,13 @@
   },
   "homepage": "https://github.com/smallcatcat-joe/my_vps#readme",
   "devDependencies": {
+    "asynquence": "^0.10.0",
     "browser-sync": "^2.18.7",
     "gulp": "^3.9.1",
     "mongoose": "^4.8.1",
     "node-sass": "^4.5.0"
+  },
+  "dependencies": {
+    "iconv-lite": "^0.4.15"
   }
 }

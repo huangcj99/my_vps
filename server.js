@@ -18,13 +18,18 @@ exports.start = function (reqMethod) {
             case 'POST':
                 reqMethod.postData(req,res);
                 break;
+            case 'DELETE':
+                reqMethod.delData(req,res);
+                break;
+            case "PUT":
+                reqMethod.putData(req,res);
+                break;
             default:
-
+                console.log("none request");
         }
     }
 
     let server = http.createServer(onRequest);
-
     server.listen(8080);
 };
 

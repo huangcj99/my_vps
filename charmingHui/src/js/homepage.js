@@ -18,16 +18,27 @@ $.post(session_url,(res) => {
 //点击退出，删除登陆状态
 $('.main_header .back span').on("click",() => {
     let session_del_url = "http://localhost:8080/session_del";
-    $.post(session_del_url,(res) => {
-        let resText = JSON.parse(res);
-        if (resText.status) {
-            location.href = "http://localhost:8080/charmingHui/src/index.html";
+    $.ajax({
+        type:"DELETE",
+        url:session_del_url,
+        success:(res) => {
+            let resText = JSON.parse(res);
+            if (resText.status) {
+                location.href = "http://localhost:8080/charmingHui/src/index.html";
+            }
         }
-    })
+    });
+
+    // $.post(session_del_url,(res) => {
+    //     let resText = JSON.parse(res);
+    //     if (resText.status) {
+    //         location.href = "http://localhost:8080/charmingHui/src/index.html";
+    //     }
+    // })
 });
 
 //发起get请求主页图片路径数据
-let homepage_img_url = "http://localhost:8080/homepage_img";
+let homepage_img_url = "http://localhost:8080/vps_homepage";
 
 $.get(homepage_img_url,(res) => {
     let resText = JSON.parse(res);

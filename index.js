@@ -1,9 +1,11 @@
 const server = require('./server'),
-      method = require('./method');
+      method = require('./router');
 
 let reqMethod = {
     getData:method.getData,
-    postData:method.postData
+    postData:method.postData,
+    delData:method.delData,
+    putData:method.putData
 };
 
 server.start(reqMethod);

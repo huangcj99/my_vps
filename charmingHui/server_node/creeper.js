@@ -66,9 +66,9 @@ let count = 0;
 //检测url是否获取成功
 let show_pop_up_urls = () => {
     setTimeout(() => {
-        pop_up_urls.forEach((pop_up,idx) => {
+        pop_up_urls.forEach((pop_up) => {
             console.log(pop_up.path);
-            pop_up.menu_urls.forEach((menu_url,idx) => {
+            pop_up.menu_urls.forEach((menu_url) => {
                 console.log(menu_url.list_url);
                 count++;
             });
@@ -92,11 +92,11 @@ let down_img = () => {
                         if (!exists) {
                             fs.mkdirSync(pop_up.path);
                             console.log("文件创建成功");
-                            get_img.next();
+                            getImg.next();
                         }
                         else {
                             console.log("文件已存在");
-                            get_img.next();
+                            getImg.next();
                         }
                     })
                 };
@@ -107,6 +107,7 @@ let down_img = () => {
                         pop_up.menu_urls.forEach((menu_url, idx) => {
                             //设置每一个pop_up下的每一个menu分类的下载间隔时间为80秒
                             setTimeout(() => {
+
                                 //判断菜单文件是否存在，不存在则创建
                                 let menu_file_exists = () => {
                                     fs.exists(menu_url.path,(exists) => {
@@ -207,8 +208,8 @@ let down_img = () => {
                     yield cycle_menu();
                 }
 
-                let get_img = gen_get_img();
-                get_img.next();
+                let getImg = gen_get_img();
+                getImg.next();
 
             },400000 * idx);
         });

@@ -227,6 +227,27 @@
 						padding: 10px 5px;
 						background-color:#666;
 						opacity:0.3;
+
+
+					}
+
+					.add_to_cart {
+						width: 100px;
+						height: 30px;
+						position: absolute;
+						background-color: red;
+						color: white;
+						text-align: center;
+						line-height: 30px;
+						font-size: 14px;
+						z-index: 20;
+						cursor: pointer;
+						margin: auto;
+						top:0;
+						bottom: 0;
+						left: 0;
+						right: 0;
+						margin-bottom:90px;
 					}
 
 					.small_photo{

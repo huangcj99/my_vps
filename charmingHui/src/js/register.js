@@ -61,7 +61,7 @@ let formMethod = {
 			return errorMsg;
 		}
 	}
-}
+};
 
 //表单元素的获取
 let $register_btn = $('.main_content .form .info .register_btn'),
@@ -96,9 +96,21 @@ let crtVerify = () => {
 
 	$verify_photo_4.css({top:parseInt(Math.random()*10),left:parseInt(Math.random() + 3) * 25})
 					.html(letter[parseInt(Math.random()*26)]);
-}
+};
 
-let validataFunc = () => {
+//前置装饰函数
+Function.prototype.before = function () {
+	let _self = this;
+	return function () {
+		if ( !validataFunc.apply(this,arguments) ) {
+			console.log("有错误,不允许提交表单");
+			return;
+		}
+		return _self.apply(this,arguments);
+    }
+};
+
+let validataFunc = function () {
 	//创建验证器的实例
 	let validator = new Validator();
 
@@ -139,9 +151,11 @@ let validataFunc = () => {
 			//同上，消除警告提示
 			$usr_msg.html("");
 			$pwd_msg.html("");
+			$verify_msg.html("");
 
 			$pwd.val("");
 			$conf.val("");
+			$verify.val("");
 			$conf_msg.html(msg);
 		}
 
@@ -155,35 +169,50 @@ let validataFunc = () => {
 			$verify.val("");
 			$verify_msg.html(msg);
 		}
+
+		return false;
 	}
 	else {
-		let usr = $usr.val(),
-			pwd = $pwd.val();
-
-		let url = `http://localhost:8080/register?usr=${usr}&pwd=${pwd}`;
-		//post数据到服务器
-		$.post(url,(res) => {
-			let resText = JSON.parse(res),
-            	$register_success = $('.register_success');
-			if (resText.status){
-				//插入注册成功并跳转页面
-				$register_success.html(resText.info);
-				location.href = "http://localhost:8080/charmingHui/src/html/login.html";
-			}
-			else {
-				//插入注册失败的info并清空表单
-                $register_success.html(resText.info);
-                $usr.val("");
-                $pwd.val("");
-                $conf.val("");
-                $verify.val("");
-                setTimeout(() => {
-                	$register_success.html("");
-				},2000)
-			}
-		})
+		return true;
 	}
+
 };
+
+let submitForm = function () {
+	console.log("没有错误提交表单");
+    let usr = $usr.val(),
+        pwd = $pwd.val();
+
+    let url = `http://localhost:8080/register?usr=${usr}&pwd=${pwd}`;
+    //post数据到服务器
+    $.post(url,(res) => {
+        let resText = JSON.parse(res),
+            $register_success = $('.register_success');
+        if (resText.status){
+            //插入注册成功并跳转页面
+            $register_success.html(resText.info);
+            location.href = "http://localhost:8080/charmingHui/src/html/login.html";
+        }
+        else {
+            //插入注册失败的info并清空表单
+            $register_success.html(resText.info);
+            //清空数据操作
+            $usr.val("");
+            $pwd.val("");
+            $conf.val("");
+            $verify.val("");
+            $usr_msg.html("");
+            $pwd_msg.html("");
+            $conf_msg.html("");
+            $verify_msg.html("");
+            setTimeout(() => {
+                $register_success.html("");
+            },2000)
+        }
+    })
+};
+
+submitForm = submitForm.before(validataFunc);
 
 //点击创建随机验证码
 $verify_photo.on("click",() => {
@@ -192,6 +221,7 @@ $verify_photo.on("click",() => {
 
 //点击验证表单信息，并确定是否提交数据到服务器
 $register_btn.on('click',() => {
-	validataFunc();
+	// validataFunc();
+	submitForm();
 });
 

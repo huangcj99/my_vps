@@ -1,3 +1,7 @@
 *.zip
 
 node_modules
+decorator_mode
+listener
+proxy_mode
+pipe.txt
