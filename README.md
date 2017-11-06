@@ -1,41 +1,43 @@
-���˲ֿ����ݽ�Ϊѧϰʹ�ã��ɷ���104.194.93.138�����ֹ����޷�ʹ�ã���cookie��ع��ܣ�
+vps已移除该站，，，已成历史
+
+（此仓库内容仅为学习使用，可访问104.194.93.138，部分功能无法使用，如cookie相关功能）
 
 	github:  git@github.com:smallcatcat-joe/my_vps.git
 
-ע��Ŀ¼charmingHuiΪXX����վ����ļ�
-    �ɽ���ע�ᡢ��¼ҳ����ת�Լ�session״̬����
-    �÷������ű���Ϊ����Զ�����ݿ⣬ip��ַΪ104.194.93.138
+注：目录charmingHui为XX惠网站相关文件
+    可进行注册、登录页面跳转以及session状态保存
+    该服务器脚本均为访问远程数据库，ip地址为104.194.93.138
     	
 
-1����ִ��npm��װmongoose,���������������ű�index.js
+1、先执行npm安装mongoose,后启动主服务器脚本index.js
 
-	server.jsΪ������������ͨ���������ͷ������ֱ���뵽method.js�в�ͬ�ĺ�����
-	method.js��ͨ��·�����������ϸ��(�����ļ��ķ��������ݵ�����)��
+	server.js为服务器监听并通过请求类型分流、分别进入到method.js中不同的函数，
+	method.js则通过路径进行任务的细分(包括文件的返回与数据的请求)。
 
-2�����������������localhost:8080 + ��Ŀ�ļ�·�����ɷ�����Ӧҳ��
+2、在浏览器当中输入localhost:8080 + 项目文件路径即可访问相应页面
 
-	�磺localhost:8080/charmingHui/src/index.html��
-	�������ļ�����ͨ��·�������ļ�����ҳ��ֱ�ӷ���localhost:8080��
+	如：localhost:8080/charmingHui/src/index.html。
+	（其余文件均可通过路径访问文件、主页可直接访问localhost:8080）
 
-	��ҳͼƬ·��ͨ��ajax�����������Ȼ��ͨ�����ݿⷵ�ص����ݽ���src����
+	主页图片路径通过ajax请求服务器，然后通过数据库返回的数据进行src插入
 
-3��charming_account/account.js
+3、charming_account/account.js
 	
-	ע�ᡢ��¼ҳ�����������Զ��mongodb���ݿ�Ľ������Լ��й�session����ҳ���¼״̬�Ľű���
-	�����н���ע��ҳ�����ע�ᣬ�����ڼ������ݿ�ǰ�����˵�����ܣ�
-	session_id������expiresΪ1�졢httpOnly��������document.cookie���и��ġ�
+	注册、登录页面表单数据与远程mongodb数据库的交互、以及有关session保存页面登录状态的脚本，
+	可自行进入注册页面进行注册，密码在加入数据库前进行了单向加密，
+	session_id设置了expires为1天、httpOnly，不可用document.cookie进行更改。
 
-4��charmingHui/src/server_node/crepper.js
+4、charmingHui/src/server_node/crepper.js
 
-	ִ��crepper�ɻ�ȡ��վ��ҳ�Լ�������Ʒ�б�ҳ��img��
+	执行crepper可获取网站主页以及各个商品列表页的img、
 
-	��ȡ�µ�ͼƬ��Դ���·����
-		src/img/list�µ�ͼƬΪ��������ҳ�������ģ���img��
-		src/img/commodity_list/pop_up1~5�ֱ�ΪŮʿ����ʿ����ױ���Ҿӡ�Ӥͯ�µ���Ʒ����ҳ���img��
-	(�ϴ���ֻ�������ͼƬ��github����)
+	爬取下的图片资源存放路径：
+		src/img/list下的图片为魅力惠主页各个类别模块的img，
+		src/img/commodity_list/pop_up1~5分别为女士、男士、美妆、家居、婴童下的商品分类页面的img。
+	(上传了只留了相关图片，github上有)
 
-5��charmingHui/server_node/homepage_img_href.js
+5、charmingHui/server_node/homepage_img_href.js
 	
-	ִ�д˽ű��ɽ�src/img/list/homepage�µ�ͼƬ������·�����ӵ�Զ�����ݿ�104.194.93.138�ϣ�
-	��ͨ��ajax�������ݿ�����ҳ��ͼƬ���ݣ����г�ʼ����(��ع��ܽű���charming_get_img�ļ�����)��
+	执行此脚本可将src/img/list/homepage下的图片的请求路径添加到远程数据库104.194.93.138上，
+	后通过ajax请求数据库中主页的图片数据，进行初始插入(相关功能脚本在charming_get_img文件夹内)。
 
